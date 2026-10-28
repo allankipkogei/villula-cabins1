@@ -90,6 +90,8 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
     'https://villula-api.onrender.com',
+    'https://villulacabinsresort.co.ke',
+    'https://www.villulacabinsresort.co.ke',
 ]
 
 # DRF + JWT

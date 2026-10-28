@@ -81,8 +81,4 @@ Frontend will be available at `http://localhost:5173/`.
 
 ---
 
-## 🔑 Default Staff Credentials
 
-- **URL**: `http://localhost:5173/admin/login`
-- **Username**: `admin`
-- **Password**: `admin123`

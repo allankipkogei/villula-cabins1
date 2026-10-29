@@ -12,7 +12,6 @@ import {
   Home,
   Wine,
   Baby,
-  Sparkles,
   Car,
   Scale,
   Leaf,
@@ -130,7 +129,7 @@ export default function HouseRules() {
     {
       num: 12,
       title: "Housekeeping",
-      icon: <Sparkles size={20} />,
+      icon: <Home size={20} />,
       items: [
         "Leave your shoes at the designated entry point. Please maintain reasonable cleanliness within your cabin during your stay.",
         "Towels and linens are provided for in-room use only."

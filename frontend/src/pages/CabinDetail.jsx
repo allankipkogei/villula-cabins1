@@ -12,7 +12,6 @@ import {
   Check,
   ShieldCheck,
   Calendar,
-  Sparkles,
   Flame,
   Wifi,
   Coffee,

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams, useLocation } from 'react-router-dom';
-import { Users, Bed, Bath, Maximize, Star, ArrowRight, Filter, Sparkles, Check } from 'lucide-react';
+import { Users, Bed, Bath, Maximize, Star, ArrowRight, Filter, Check } from 'lucide-react';
 import api from '../api';
 import { formatKSh } from '../utils/formatCurrency';
 import { getImageUrl } from '../utils/imageUrl';

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
-import { Menu, X, Compass, Phone, Sparkles } from 'lucide-react';
+import { Menu, X, Compass, Phone } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 
 export default function Header() {
@@ -90,7 +90,6 @@ export default function Header() {
               className="btn btn-primary"
               style={{ padding: '0.65rem 1.4rem' }}
             >
-              <Sparkles size={16} />
               Book Now
             </Link>
 
@@ -163,7 +162,7 @@ export default function Header() {
               className="btn btn-primary"
               style={{ width: '100%' }}
             >
-              <Sparkles size={16} /> Check Availability & Book
+              Check Availability & Book
             </Link>
           </div>
         </div>

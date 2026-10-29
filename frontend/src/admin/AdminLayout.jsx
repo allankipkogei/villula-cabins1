@@ -10,8 +10,7 @@ import {
   ExternalLink,
   Menu,
   X,
-  Shield,
-  Sparkles
+  Shield
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import BrandLogo from '../components/BrandLogo';
@@ -85,11 +84,6 @@ export default function AdminLayout() {
         <NavLink to="/admin/cabins" style={navLinkStyle}>
           <Home size={18} />
           <span style={{ flex: 1 }}>Sanctuaries</span>
-          {stats?.total_units && (
-            <span style={{ color: '#7E9185', fontSize: '0.75rem' }}>
-              {stats.total_units}
-            </span>
-          )}
         </NavLink>
 
         <NavLink to="/admin/messages" style={navLinkStyle}>

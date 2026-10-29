@@ -578,6 +578,12 @@ export default function AdminCabins() {
         </div>
       )}
 
+      {error && !showForm && (
+        <div style={{ color: '#B91C1C', backgroundColor: '#FEE2E2', padding: '0.85rem 1.25rem', borderRadius: '8px', fontSize: '0.9rem', marginBottom: '1.25rem' }}>
+          {error}
+        </div>
+      )}
+
       {/* Sanctuary List */}
       {loading ? (
         <div style={{ textAlign: 'center', padding: '4rem', color: '#6B7280' }}>

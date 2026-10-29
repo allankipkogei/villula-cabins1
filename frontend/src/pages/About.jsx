@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles, Trees, ShieldCheck, Heart, ArrowRight, HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { Trees, ShieldCheck, Heart, ArrowRight, HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
 import api from '../api';
 import BrandLogo from '../components/BrandLogo';
 

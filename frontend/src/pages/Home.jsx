@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  Sparkles,
   Compass,
   Flame,
   Wifi,
@@ -108,7 +107,7 @@ export default function Home() {
               marginBottom: '1.5rem',
             }}
           >
-            <Sparkles size={14} /> Modern Architectural Micro-Stays
+            Modern Architectural Micro-Stays
           </div>
 
           <h1

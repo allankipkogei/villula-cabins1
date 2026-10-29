@@ -456,16 +456,33 @@ export default function AdminRegister() {
                       backgroundColor: '#FEF3C7',
                       border: '1px solid #FCD34D',
                       color: '#92400E',
-                      padding: '0.75rem 1rem',
-                      borderRadius: '8px',
+                      padding: '0.85rem 1rem',
+                      borderRadius: '10px',
                       fontSize: '0.85rem',
-                      marginBottom: '1rem',
+                      marginBottom: '1.25rem',
                       textAlign: 'center',
                     }}
                   >
-                    <div><strong>Development Notice:</strong> Live SMTP not configured in .env yet.</div>
-                    <div style={{ marginTop: '0.35rem' }}>
-                      Your authentication code is: <strong style={{ fontSize: '1.25rem', letterSpacing: '3px', color: '#78350F' }}>{devCode}</strong>
+                    <div><strong>Development Notice:</strong> Live email sending (SMTP) requires email credentials in <code>backend/.env</code>, so emails are logged to the console in dev mode.</div>
+                    <div style={{ marginTop: '0.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                      <span>Your code:</span>
+                      <strong style={{ fontSize: '1.3rem', letterSpacing: '4px', color: '#78350F', backgroundColor: '#FDE68A', padding: '0.2rem 0.6rem', borderRadius: '6px' }}>{devCode}</strong>
+                      <button
+                        type="button"
+                        onClick={() => setCode(devCode)}
+                        style={{
+                          backgroundColor: '#92400E',
+                          color: '#FFFFFF',
+                          border: 'none',
+                          padding: '0.35rem 0.75rem',
+                          borderRadius: '6px',
+                          cursor: 'pointer',
+                          fontWeight: 600,
+                          fontSize: '0.8rem',
+                        }}
+                      >
+                        Auto-fill Code
+                      </button>
                     </div>
                   </div>
                 )}

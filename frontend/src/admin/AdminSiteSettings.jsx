@@ -12,11 +12,10 @@ export default function AdminSiteSettings() {
     contact_phone: '',
     contact_email: '',
     contact_address: '',
-    check_in_time: '3:00 PM',
+    check_in_time: '1:00 PM',
     check_out_time: '11:00 AM',
     map_embed_url: '',
     instagram_url: '',
-    facebook_url: '',
   });
 
   const [aboutImageFile, setAboutImageFile] = useState(null);
@@ -271,25 +270,14 @@ export default function AdminSiteSettings() {
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 250px), 1fr))', gap: '1rem' }}>
-            <div>
-              <label>Instagram URL</label>
-              <input
-                name="instagram_url"
-                value={settings.instagram_url}
-                onChange={handleChange}
-                placeholder="https://instagram.com/villulacabins"
-              />
-            </div>
-            <div>
-              <label>Facebook URL</label>
-              <input
-                name="facebook_url"
-                value={settings.facebook_url}
-                onChange={handleChange}
-                placeholder="https://facebook.com/villulacabins"
-              />
-            </div>
+          <div>
+            <label>Instagram URL</label>
+            <input
+              name="instagram_url"
+              value={settings.instagram_url}
+              onChange={handleChange}
+              placeholder="https://www.instagram.com/villulacabinseldoret/"
+            />
           </div>
         </div>
 

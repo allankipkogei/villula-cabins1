@@ -89,8 +89,9 @@ class SiteSettings(models.Model):
         default="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.654877395028!2d35.3199392!3d0.5151905!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1781030023508837%3A0x75e2b224eac58bcd!2sVIllula%20View%20Villas!5e0!3m2!1sen!2ske!4v1714000000000!5m2!1sen!2ske",
         help_text="Google Maps embed URL or iframe src"
     )
-    instagram_url = models.URLField(blank=True, default="https://instagram.com/villulastays")
-    facebook_url = models.URLField(blank=True, default="https://facebook.com/villulastays")
+    instagram_url = models.URLField(default='https://www.instagram.com/villulacabinseldoret/')
+    # facebook_url = models.URLField(blank=True, null=True)
+    
 
     class Meta:
         verbose_name = "Site Settings"

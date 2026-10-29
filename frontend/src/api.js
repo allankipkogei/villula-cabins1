@@ -1,7 +1,17 @@
 import axios from 'axios';
 
+const getBaseUrl = () => {
+  if (import.meta.env.VITE_API_URL) return import.meta.env.VITE_API_URL;
+  if (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')) {
+    return 'http://127.0.0.1:8000/api/';
+  }
+  return 'https://villula-api.onrender.com/api/';
+};
+
+const BASE_URL = getBaseUrl();
+
 const api = axios.create({
-  baseURL: 'https://villula-api.onrender.com/api/',
+  baseURL: BASE_URL,
 });
 
 // Attach token from localStorage on every request
@@ -22,7 +32,7 @@ api.interceptors.response.use(
       if (refresh) {
         try {
           const { data } = await axios.post(
-            'http://127.0.0.1:8000/api/token/refresh/',
+            `${BASE_URL}token/refresh/`,
             { refresh }
           );
           localStorage.setItem('access', data.access);

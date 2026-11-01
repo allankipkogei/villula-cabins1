@@ -13,7 +13,7 @@ import {
   CheckCircle2,
   AlertCircle,
   ArrowLeft,
-  Shield
+  Shield // Added Shield icon for the invite code
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import BrandLogo from '../components/BrandLogo';
@@ -32,6 +32,9 @@ export default function AdminRegister() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  
+  // NEW: Invite Code State
+  const [inviteCode, setInviteCode] = useState('');
 
   // Code Verification
   const [code, setCode] = useState('');
@@ -101,6 +104,7 @@ export default function AdminRegister() {
         password,
         full_name: fullName.trim(),
         phone: phone.trim(),
+        invite_code: inviteCode.trim(), // <-- Send to backend
       });
 
       if (res.dev_code) {
@@ -245,7 +249,7 @@ export default function AdminRegister() {
                 New Admin Registration
               </h1>
               <p style={{ margin: 0, color: '#6B7280', fontSize: '0.88rem' }}>
-                Sign up as a resort administrator. An authentication code will be sent to your email to activate access.
+                Sign up as a resort administrator. You must have a valid staff invite code.
               </p>
             </>
           ) : (
@@ -403,6 +407,21 @@ export default function AdminRegister() {
                 onChange={e => setConfirmPassword(e.target.value)}
                 required
                 style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid #D1D5DB' }}
+              />
+            </div>
+
+            {/* NEW: Invite Code Field */}
+            <div>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontSize: '0.85rem', fontWeight: 600, color: '#B45309', marginBottom: '0.35rem' }}>
+                <Shield size={15} /> Staff Invite Code
+              </label>
+              <input
+                type="password"
+                placeholder="Enter the secret code provided by management"
+                value={inviteCode}
+                onChange={e => setInviteCode(e.target.value)}
+                required
+                style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid #FCD34D', backgroundColor: '#FFFBEB' }}
               />
             </div>
 

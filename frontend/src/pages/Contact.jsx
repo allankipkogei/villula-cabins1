@@ -135,7 +135,7 @@ export default function Contact() {
                       {settings.contact_phone}
                     </a>
                     <div style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginTop: '0.2rem' }}>
-                      Available daily: 8:00 AM – 8:00 PM PST
+                      Available daily: 8:00 AM – 8:00 PM EAT
                     </div>
                   </div>
                 </div>

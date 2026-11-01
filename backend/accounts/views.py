@@ -2,6 +2,7 @@ from datetime import timedelta
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+from django.conf import settings
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -23,6 +24,17 @@ class RegisterView(APIView):
     permission_classes = [AllowAny]
 
     def post(self, request):
+        # 1. SECURITY CHECK: Verify the Invite Code first
+        invite_code = request.data.get('invite_code', '').strip()
+        expected_code = getattr(settings, 'STAFF_INVITE_CODE', 'VillulaStaff2026!')
+        
+        if invite_code != expected_code:
+            return Response(
+                {"error": "Invalid Invite Code. You are not authorized to register."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        # 2. Proceed with normal validation
         serializer = RegisterSerializer(data=request.data)
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -77,7 +89,7 @@ class RegisterView(APIView):
             "email": email,
             "email_sent": email_sent
         }
-        from django.conf import settings
+        
         if settings.DEBUG and not getattr(settings, 'EMAIL_HOST_USER', None):
             response_data["dev_code"] = code_record.code
 
@@ -187,7 +199,7 @@ class ResendCodeView(APIView):
             "email": email,
             "email_sent": email_sent
         }
-        from django.conf import settings
+        
         if settings.DEBUG and not getattr(settings, 'EMAIL_HOST_USER', None):
             response_data["dev_code"] = code_record.code
 

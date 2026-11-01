@@ -141,3 +141,4 @@ SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
 }
+STAFF_INVITE_CODE = config('STAFF_INVITE_CODE', default='VillulaStaff2026!')

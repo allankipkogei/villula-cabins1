@@ -9,6 +9,7 @@ from .serializers import (
     CabinListSerializer, CabinDetailSerializer,
     CabinAdminSerializer, CabinImageSerializer, SiteSettingsSerializer
 )
+import traceback
 
 
 class SiteSettingsView(APIView):
@@ -131,13 +132,18 @@ class AdminCabinImageListCreateView(generics.ListCreateAPIView):
                     cabin.images.filter(is_primary=True).update(is_primary=False)
                     has_primary = True
 
-                inst = CabinImage.objects.create(
-                    cabin=cabin,
-                    image=img_file,
-                    alt_text=alt_text,
-                    is_primary=is_primary
-                )
-                created_instances.append(inst)
+                # NEW ERROR HANDLING HERE
+                try:
+                    inst = CabinImage.objects.create(
+                        cabin=cabin,
+                        image=img_file,
+                        alt_text=alt_text,
+                        is_primary=is_primary
+                    )
+                    created_instances.append(inst)
+                except Exception as e:
+                    traceback.print_exc()
+                    return Response({'error': f'Upload failed: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
             serializer = self.get_serializer(created_instances, many=True, context={'request': request})
             return Response(serializer.data, status=status.HTTP_201_CREATED)

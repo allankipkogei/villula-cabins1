@@ -159,3 +159,6 @@ cloudinary.config(
 )
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# PAYSTACK CONFIGURATION
+PAYSTACK_SECRET_KEY = config('PAYSTACK_SECRET_KEY', default='')

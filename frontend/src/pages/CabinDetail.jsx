@@ -48,7 +48,6 @@ export default function CabinDetail() {
 
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [confirmedBooking, setConfirmedBooking] = useState(null);
 
   useEffect(() => {
     if (user) {
@@ -136,25 +135,19 @@ export default function CabinDetail() {
         check_out: formatDate(range.to),
       };
 
+      // 1. Create the booking in the database (status = pending)
       const res = await api.post('bookings/', payload);
-      setConfirmedBooking({
-        id: res.data.id || Math.floor(100000 + Math.random() * 900000),
-        ...payload,
-        total_price: grandTotal,
-        nights,
-      });
+      const bookingId = res.data.id;
 
-      // Refresh availability
-      const availRes = await api.get(`cabins/${cabin.id}/availability/`);
-      const disabled = [];
-      availRes.data.forEach(b => {
-        const start = new Date(b.check_in + 'T00:00:00');
-        const end = new Date(b.check_out + 'T00:00:00');
-        for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
-          disabled.push(new Date(d));
-        }
-      });
-      setBookedDates(disabled);
+      // 2. Ask Django/Paystack for a checkout URL
+      const paymentRes = await api.post('create-checkout-session/', { booking_id: bookingId });
+
+      // 3. Redirect the guest to the Paystack payment page
+      if (paymentRes.data.url) {
+        window.location.href = paymentRes.data.url;
+      } else {
+        throw new Error("Could not generate payment link. Please try again.");
+      }
 
     } catch (err) {
       const detail = err.response?.data;
@@ -162,9 +155,8 @@ export default function CabinDetail() {
         const messages = Object.entries(detail).map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(' ') : v}`);
         setErrorMessage(messages.join(' | '));
       } else {
-        setErrorMessage('Failed to submit booking. Please verify the dates are available.');
+        setErrorMessage(err.message || 'Failed to submit booking. Please verify the dates are available.');
       }
-    } finally {
       setSubmitting(false);
     }
   };
@@ -647,107 +639,17 @@ export default function CabinDetail() {
                     opacity: (!range?.from || !range?.to || nights === 0) ? 0.6 : 1,
                   }}
                 >
-                  {submitting ? 'Confirming with Concierge…' : 'Reserve This Sanctuary'}
+                  {submitting ? 'Redirecting to secure payment…' : 'Reserve & Pay Securely'}
                 </button>
               </form>
 
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', fontSize: '0.8rem', marginTop: '1.25rem' }}>
-                <ShieldCheck size={16} /> Instant confirmation · Direct booking guarantee
+                <ShieldCheck size={16} /> Secure payment via Card or M-Pesa
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      {/* Confirmation Modal */}
-      {confirmedBooking && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 999,
-            backgroundColor: 'rgba(14, 27, 19, 0.75)',
-            backdropFilter: 'blur(6px)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            padding: '1.5rem',
-          }}
-        >
-          <div
-            style={{
-              backgroundColor: '#FFFFFF',
-              borderRadius: 'var(--radius-xl)',
-              padding: '2.5rem',
-              maxWidth: '520px',
-              width: '100%',
-              boxShadow: 'var(--shadow-xl)',
-              textAlign: 'center',
-              position: 'relative',
-            }}
-          >
-            <div
-              style={{
-                width: '64px',
-                height: '64px',
-                borderRadius: '50%',
-                backgroundColor: 'var(--color-primary-100)',
-                color: 'var(--color-primary-700)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '0 auto 1.5rem',
-              }}
-            >
-              <CheckCircle2 size={36} />
-            </div>
-
-            <h2 style={{ fontSize: '1.8rem', marginBottom: '0.5rem' }}>
-              Reservation Requested!
-            </h2>
-            <p style={{ color: 'var(--color-text-muted)', marginBottom: '1.75rem' }}>
-              Thank you, <strong>{confirmedBooking.guest_name}</strong>. Your reservation request for <strong>{cabin.name}</strong> has been received by our resort concierge.
-            </p>
-
-            <div
-              style={{
-                backgroundColor: 'var(--color-sand-50)',
-                border: '1px solid var(--color-sand-200)',
-                borderRadius: 'var(--radius-md)',
-                padding: '1.25rem',
-                textAlign: 'left',
-                display: 'grid',
-                gap: '0.5rem',
-                fontSize: '0.9rem',
-                marginBottom: '2rem',
-              }}
-            >
-              <div><strong>Booking Reference:</strong> #VIL-{confirmedBooking.id}</div>
-              <div><strong>Check-in:</strong> {confirmedBooking.check_in} (From 1:00 PM)</div>
-              <div><strong>Check-out:</strong> {confirmedBooking.check_out} (By 11:00 AM)</div>
-              <div><strong>Guests:</strong> {confirmedBooking.guests}</div>
-              <div><strong>Total Estimated:</strong> {formatKSh(confirmedBooking.total_price)}</div>
-            </div>
-
-            <div style={{ display: 'grid', gap: '0.75rem' }}>
-              <button
-                onClick={() => setConfirmedBooking(null)}
-                className="btn btn-primary"
-                style={{ width: '100%' }}
-              >
-                Done / Continue Browsing
-              </button>
-              <Link
-                to="/contact"
-                className="btn btn-outline"
-                style={{ width: '100%' }}
-              >
-                Contact Concierge Desk
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Fullscreen Photo Modal */}
       {modalImage && (

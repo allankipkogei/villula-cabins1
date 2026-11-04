@@ -3,7 +3,10 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db.models import Count, Sum, Q
+from django.conf import settings
 from datetime import date
+import requests
+
 from .models import Booking
 from cabins.models import Cabin
 from contacts.models import ContactMessage
@@ -26,6 +29,44 @@ class CabinAvailabilityView(APIView):
             status__in=['pending', 'confirmed'],
         ).values('check_in', 'check_out')
         return Response(list(bookings))
+
+
+class CreateCheckoutSessionView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        try:
+            booking_id = request.data.get('booking_id')
+            booking = Booking.objects.get(id=booking_id)
+            
+            # Paystack expects the amount in the lowest denomination (cents)
+            # KES 30,000 becomes 3,000,000
+            amount = int(booking.total_price * 100) 
+            
+            url = "https://api.paystack.co/transaction/initialize"
+            headers = {
+                "Authorization": f"Bearer {settings.PAYSTACK_SECRET_KEY}",
+                "Content-Type": "application/json"
+            }
+            payload = {
+                "email": booking.guest_email,
+                "amount": amount,
+                "reference": f"VIL-{booking.id}",
+                "callback_url": "https://villulacabinsresort.co.ke/success"
+            }
+            
+            response = requests.post(url, json=payload, headers=headers)
+            data = response.json()
+            
+            if data.get('status'):
+                return Response({'url': data['data']['authorization_url']})
+            else:
+                return Response({'error': data.get('message', 'Failed to initialize payment')}, status=status.HTTP_400_BAD_REQUEST)
+                
+        except Booking.DoesNotExist:
+            return Response({'error': 'Booking not found'}, status=status.HTTP_404_NOT_FOUND)
+        except Exception as e:
+            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 # ---------- ADMIN ----------

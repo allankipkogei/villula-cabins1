@@ -142,7 +142,7 @@ export default function CabinDetail() {
       const bookingId = Array.isArray(res.data) ? res.data[0].id : res.data.id;
 
       if (!bookingId) {
-        throw new Error("Booking was created but no ID was returned.");
+        throw new Error("Booking was created but no ID was returned. Please check the backend logs.");
       }
 
       // 2. Wait 1 second to ensure the database transaction commits on Render

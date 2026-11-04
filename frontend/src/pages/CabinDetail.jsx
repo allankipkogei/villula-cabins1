@@ -9,14 +9,8 @@ import {
   Bath,
   Maximize,
   Star,
-  Check,
   ShieldCheck,
   Calendar,
-  Flame,
-  Wifi,
-  Coffee,
-  Trees,
-  Clock,
   MapPin,
   CheckCircle2,
   X
@@ -104,9 +98,12 @@ export default function CabinDetail() {
 
   const rate = cabin ? Number(cabin.price_per_night) : 0;
   const staySubtotal = nights * rate;
-  const cleaningFee = nights > 0 ? 3500 : 0;
-  const resortTax = Math.round(staySubtotal * 0.08);
-  const grandTotal = staySubtotal + cleaningFee + resortTax;
+  
+  // CHANGED: Tax is now 16%
+  const resortTax = Math.round(staySubtotal * 0.16);
+  
+  // CHANGED: Removed cleaning fee from total calculation
+  const grandTotal = staySubtotal + resortTax;
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -368,50 +365,6 @@ export default function CabinDetail() {
               </p>
             </div>
 
-            {/* Architectural Highlights */}
-            <div
-              style={{
-                backgroundColor: 'var(--color-sand-100)',
-                padding: '2rem',
-                borderRadius: 'var(--radius-lg)',
-                border: '1px solid var(--color-sand-200)',
-                marginBottom: '3rem',
-              }}
-            >
-              <h3 style={{ margin: '0 0 1rem' }}>Architectural Design Features</h3>
-              {cabin.unit_type === 'container' ? (
-                <div style={{ display: 'grid', gap: '0.75rem', color: 'var(--color-text-main)', fontSize: '0.95rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                    <Check size={18} style={{ color: 'var(--color-primary-600)' }} />
-                    Reinforced Corten steel shell insulated with eco-friendly closed-cell spray foam
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                    <Check size={18} style={{ color: 'var(--color-primary-600)' }} />
-                    Cantilevered outdoor deck made from sustainably harvested western red cedar
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                    <Check size={18} style={{ color: 'var(--color-primary-600)' }} />
-                    Triple-glazed floor-to-ceiling glass wall for seamless panoramic nature views
-                  </div>
-                </div>
-              ) : (
-                <div style={{ display: 'grid', gap: '0.75rem', color: 'var(--color-text-main)', fontSize: '0.95rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                    <Check size={18} style={{ color: 'var(--color-primary-600)' }} />
-                    Curved aerospace thermal smart-glass canopy with motorized blackout shades
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                    <Check size={18} style={{ color: 'var(--color-primary-600)' }} />
-                    Acoustic soundproofing to isolate gentle breezes and natural serenity
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                    <Check size={18} style={{ color: 'var(--color-primary-600)' }} />
-                    Elevated steel pylon foundation ensuring minimal disturbance to the terrain
-                  </div>
-                </div>
-              )}
-            </div>
-
             {/* Amenities Grid */}
             <div style={{ marginBottom: '3rem' }}>
               <h2 style={{ fontSize: '1.75rem', marginBottom: '1.25rem' }}>Amenities & Inclusions</h2>
@@ -645,12 +598,9 @@ export default function CabinDetail() {
                       <span>{formatKSh(rate)} × {nights} nights</span>
                       <span>{formatKSh(staySubtotal)}</span>
                     </div>
+                    {/* REMOVED: Sanctuary Preparation & Cleaning fee line */}
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span>Sanctuary Preparation & Cleaning</span>
-                      <span>{formatKSh(cleaningFee)}</span>
-                    </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span>Resort Lodging Tax & Levies (8%)</span>
+                      <span>Resort Lodging Tax & Levies (16%)</span>
                       <span>{formatKSh(resortTax)}</span>
                     </div>
                     <div

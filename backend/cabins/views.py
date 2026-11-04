@@ -10,6 +10,8 @@ from .serializers import (
     CabinAdminSerializer, CabinImageSerializer, SiteSettingsSerializer
 )
 import traceback
+import cloudinary
+import cloudinary.uploader
 
 
 class SiteSettingsView(APIView):
@@ -132,18 +134,22 @@ class AdminCabinImageListCreateView(generics.ListCreateAPIView):
                     cabin.images.filter(is_primary=True).update(is_primary=False)
                     has_primary = True
 
-                # NEW ERROR HANDLING HERE
                 try:
+                    # THE PERMANENT FIX: Upload directly to Cloudinary
+                    upload_result = cloudinary.uploader.upload(img_file)
+                    cloudinary_url = upload_result.get('secure_url')
+
+                    # Save ONLY the URL to the external_url field
                     inst = CabinImage.objects.create(
                         cabin=cabin,
-                        image=img_file,
+                        external_url=cloudinary_url,
                         alt_text=alt_text,
                         is_primary=is_primary
                     )
                     created_instances.append(inst)
                 except Exception as e:
                     traceback.print_exc()
-                    return Response({'error': f'Upload failed: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                    return Response({'error': f'Cloudinary Upload Failed: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
             serializer = self.get_serializer(created_instances, many=True, context={'request': request})
             return Response(serializer.data, status=status.HTTP_201_CREATED)

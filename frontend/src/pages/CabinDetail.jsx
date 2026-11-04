@@ -135,27 +135,27 @@ export default function CabinDetail() {
         check_out: formatDate(range.to),
       };
 
-      // 1. Create the booking in the database (status = pending)
+      // 1. Create the booking
       const res = await api.post('bookings/', payload);
       
-      // Handle both object and array responses from Django
-      const bookingId = Array.isArray(res.data) ? res.data[0].id : res.data.id;
+      // Now the ID is guaranteed to be at res.data.id because of the backend fix
+      const bookingId = res.data.id;
 
       if (!bookingId) {
-        throw new Error("Booking was created but no ID was returned. Please check the backend logs.");
+        throw new Error("Booking was created but no ID was returned.");
       }
 
-      // 2. Wait 1 second to ensure the database transaction commits on Render
+      // 2. Wait 1 second to ensure the database transaction commits
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       // 3. Ask Django/Paystack for a checkout URL
       const paymentRes = await api.post('create-checkout-session/', { booking_id: bookingId });
 
-      // 4. Redirect the guest to the Paystack payment page
+      // 4. Redirect to Paystack
       if (paymentRes.data.url) {
         window.location.href = paymentRes.data.url;
       } else {
-        throw new Error(paymentRes.data.error || "Could not generate payment link. Please try again.");
+        throw new Error(paymentRes.data.error || "Could not generate payment link.");
       }
 
     } catch (err) {

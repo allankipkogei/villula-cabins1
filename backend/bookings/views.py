@@ -19,6 +19,19 @@ class BookingCreateView(generics.CreateAPIView):
     serializer_class = BookingCreateSerializer
     permission_classes = [AllowAny]
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        booking = serializer.save()
+        
+        # Explicitly return the ID and details
+        return Response({
+            'id': booking.id,
+            'check_in': booking.check_in,
+            'check_out': booking.check_out,
+            'total_price': booking.total_price
+        }, status=status.HTTP_201_CREATED)
+
 
 class CabinAvailabilityView(APIView):
     permission_classes = [AllowAny]

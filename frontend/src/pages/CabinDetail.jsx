@@ -96,14 +96,16 @@ export default function CabinDetail() {
     ? Math.max(1, Math.round((range.to.getTime() - range.from.getTime()) / (1000 * 60 * 60 * 24)))
     : 0;
 
-  const rate = cabin ? Number(cabin.price_per_night) : 0;
-  const staySubtotal = nights * rate;
+  // The admin's price is the FINAL price per night (Tax Included)
+  const adminPricePerNight = cabin ? Number(cabin.price_per_night) : 0;
   
-  // CHANGED: Tax is now 16%
-  const resortTax = Math.round(staySubtotal * 0.16);
-  
-  // CHANGED: Removed cleaning fee from total calculation
-  const grandTotal = staySubtotal + resortTax;
+  // The Grand Total is just the admin price times the number of nights
+  const grandTotal = nights * adminPricePerNight;
+
+  // To show the breakdown, we reverse-calculate the base rate and tax (Total / 1.16)
+  const baseRatePerNight = adminPricePerNight / 1.16;
+  const staySubtotal = nights * baseRatePerNight;
+  const resortTax = grandTotal - staySubtotal;
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -452,9 +454,9 @@ export default function CabinDetail() {
               <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '1.5rem', borderBottom: '1px solid var(--color-sand-200)', paddingBottom: '1.25rem' }}>
                 <div>
                   <span style={{ fontSize: '1.9rem', fontWeight: 700, color: 'var(--color-primary-900)' }}>
-                    {formatKSh(cabin.price_per_night)}
+                    {formatKSh(adminPricePerNight)}
                   </span>
-                  <span style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem' }}> / night</span>
+                  <span style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem' }}> / night (incl. tax)</span>
                 </div>
                 {Number(cabin.rating) > 0 && (
                   <div
@@ -595,10 +597,9 @@ export default function CabinDetail() {
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span>{formatKSh(rate)} × {nights} nights</span>
+                      <span>{formatKSh(baseRatePerNight)} × {nights} nights</span>
                       <span>{formatKSh(staySubtotal)}</span>
                     </div>
-                    {/* REMOVED: Sanctuary Preparation & Cleaning fee line */}
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <span>Resort Lodging Tax & Levies (16%)</span>
                       <span>{formatKSh(resortTax)}</span>

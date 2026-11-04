@@ -32,14 +32,9 @@ class BookingCreateSerializer(serializers.ModelSerializer):
         with transaction.atomic():
             nights = (validated_data['check_out'] - validated_data['check_in']).days
             
-            # Calculate Subtotal
-            stay_subtotal = nights * validated_data['cabin'].price_per_night
-            
-            # 16% Tax, No Cleaning Fee
-            resort_tax = stay_subtotal * 0.16
-            grand_total = stay_subtotal + resort_tax
-            
-            validated_data['total_price'] = grand_total
+            # The admin price is the FINAL price (tax included)
+            # So the grand total is just the price multiplied by the nights
+            validated_data['total_price'] = nights * validated_data['cabin'].price_per_night
             return super().create(validated_data)
 
 
@@ -64,7 +59,6 @@ class BookingAdminSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         if 'total_price' not in validated_data or not validated_data['total_price']:
             nights = (validated_data['check_out'] - validated_data['check_in']).days
-            stay_subtotal = nights * validated_data['cabin'].price_per_night
-            resort_tax = stay_subtotal * 0.16
-            validated_data['total_price'] = stay_subtotal + resort_tax
+            # The admin price is the FINAL price (tax included)
+            validated_data['total_price'] = nights * validated_data['cabin'].price_per_night
         return super().create(validated_data)

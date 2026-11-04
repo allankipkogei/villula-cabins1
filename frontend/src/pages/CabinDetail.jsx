@@ -137,25 +137,35 @@ export default function CabinDetail() {
 
       // 1. Create the booking in the database (status = pending)
       const res = await api.post('bookings/', payload);
-      const bookingId = res.data.id;
+      
+      // Handle both object and array responses from Django
+      const bookingId = Array.isArray(res.data) ? res.data[0].id : res.data.id;
 
-      // 2. Ask Django/Paystack for a checkout URL
+      if (!bookingId) {
+        throw new Error("Booking was created but no ID was returned.");
+      }
+
+      // 2. Wait 1 second to ensure the database transaction commits on Render
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // 3. Ask Django/Paystack for a checkout URL
       const paymentRes = await api.post('create-checkout-session/', { booking_id: bookingId });
 
-      // 3. Redirect the guest to the Paystack payment page
+      // 4. Redirect the guest to the Paystack payment page
       if (paymentRes.data.url) {
         window.location.href = paymentRes.data.url;
       } else {
-        throw new Error("Could not generate payment link. Please try again.");
+        throw new Error(paymentRes.data.error || "Could not generate payment link. Please try again.");
       }
 
     } catch (err) {
+      console.error("Payment Error:", err);
       const detail = err.response?.data;
       if (typeof detail === 'object') {
-        const messages = Object.entries(detail).map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(' ') : v}`);
-        setErrorMessage(messages.join(' | '));
+        const messages = Object.entries(detail).map(([k, v]) => `${k}: ${Array.isArray(v) ? v.join(' ') : v}`).join(' | ');
+        setErrorMessage(messages || 'Verification failed.');
       } else {
-        setErrorMessage(err.message || 'Failed to submit booking. Please verify the dates are available.');
+        setErrorMessage(detail || err.message || 'Failed to submit booking.');
       }
       setSubmitting(false);
     }

@@ -120,7 +120,8 @@ export default function About() {
             </div>
           </div>
 
-          <div>
+          {/* Image / Fallback Card */}
+          <div style={{ width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
             {settings?.about_image_display ? (
               <div
                 style={{
@@ -128,6 +129,7 @@ export default function About() {
                   overflow: 'hidden',
                   boxShadow: 'var(--shadow-xl)',
                   height: '460px',
+                  width: '100%',
                 }}
               >
                 <img
@@ -142,7 +144,7 @@ export default function About() {
                   borderRadius: 'var(--radius-xl)',
                   backgroundColor: '#0E1B13',
                   color: '#FFFFFF',
-                  padding: '3.5rem 2.5rem',
+                  padding: 'clamp(2rem, 5vw, 3.5rem) clamp(1rem, 4vw, 2.5rem)',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
@@ -153,6 +155,9 @@ export default function About() {
                   minHeight: '440px',
                   position: 'relative',
                   overflow: 'hidden',
+                  width: '100%',
+                  maxWidth: '100vw',
+                  boxSizing: 'border-box',
                 }}
               >
                 <div
@@ -165,15 +170,22 @@ export default function About() {
                     background: 'linear-gradient(90deg, #D4AF37, #F59E0B, #D4AF37)',
                   }}
                 />
-                <BrandLogo variant="mark" size="lg" theme="dark" />
+                
+                {/* Responsive Logo Wrapper */}
+                <div style={{ width: '100%', maxWidth: '280px', margin: '0 auto' }}>
+                  <BrandLogo variant="mark" size="lg" theme="dark" />
+                </div>
+
                 <h3
                   style={{
                     color: '#FFFFFF',
-                    fontSize: '1.6rem',
+                    fontSize: 'clamp(1.2rem, 4vw, 1.6rem)',
                     marginTop: '1.5rem',
                     marginBottom: '0.4rem',
                     letterSpacing: '0.04em',
                     fontFamily: 'var(--font-serif)',
+                    width: '100%',
+                    wordBreak: 'break-word',
                   }}
                 >
                   VILLULA CABINS RESORT
@@ -181,7 +193,7 @@ export default function About() {
                 <div
                   style={{
                     color: '#D4AF37',
-                    fontSize: '0.82rem',
+                    fontSize: 'clamp(0.7rem, 2.5vw, 0.82rem)',
                     letterSpacing: '0.14em',
                     textTransform: 'uppercase',
                     fontWeight: 700,
@@ -193,7 +205,7 @@ export default function About() {
                 <p
                   style={{
                     color: '#E5E7EB',
-                    fontSize: '1rem',
+                    fontSize: '0.95rem',
                     lineHeight: 1.6,
                     maxWidth: '340px',
                     margin: '0 0 1.75rem',

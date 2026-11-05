@@ -364,7 +364,14 @@ export default function CabinDetail() {
             {/* Description */}
             <div style={{ marginBottom: '3rem' }}>
               <h2 style={{ fontSize: '1.75rem', marginBottom: '1rem' }}>About This Sanctuary</h2>
-              <p style={{ color: 'var(--color-text-main)', fontSize: '1.05rem', lineHeight: 1.8, margin: 0 }}>
+              <p style={{ 
+                color: 'var(--color-text-main)', 
+                fontSize: '1.05rem', 
+                lineHeight: 1.8, 
+                margin: 0,
+                wordBreak: 'break-word',
+                overflowWrap: 'anywhere'
+              }}>
                 {cabin.description}
               </p>
             </div>

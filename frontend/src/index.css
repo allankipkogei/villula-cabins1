@@ -429,3 +429,12 @@ html, body {
   }
 }
 
+/* ==========================================================================
+   Text Wrapping Fix for Mobile (Prevents horizontal overflow)
+   ========================================================================== */
+p, h1, h2, h3, h4, h5, h6, span, div {
+  overflow-wrap: break-word !important;
+  word-wrap: break-word !important;
+  word-break: break-word !important;
+  hyphens: auto;
+}

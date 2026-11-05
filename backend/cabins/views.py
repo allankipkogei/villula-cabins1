@@ -30,6 +30,30 @@ class SiteSettingsView(APIView):
 
     def patch(self, request):
         settings_obj = SiteSettings.get()
+        
+        # Check if a story image was uploaded
+        image_file = request.FILES.get('about_image')
+        
+        if image_file:
+            try:
+                # Upload directly to Cloudinary
+                upload_result = cloudinary.uploader.upload(image_file)
+                cloudinary_url = upload_result.get('secure_url')
+                
+                # Save the secure URL string to the model (ensure your model has a field for this, e.g. about_image_url or similar)
+                # If your model uses ImageField, setting it to a string might require you to bypass the field validation.
+                # Assuming your model has a field to hold the URL directly:
+                settings_obj.about_image_url = cloudinary_url 
+                
+                # If your model actually has an ImageField, you can save the URL to a separate CharField, or adjust this line based on your model structure.
+                # settings_obj.about_image = cloudinary_url 
+                
+                settings_obj.save()
+            except Exception as e:
+                traceback.print_exc()
+                return Response({'error': f'Cloudinary Upload Failed: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        # Process the rest of the text fields
         serializer = SiteSettingsSerializer(settings_obj, data=request.data, partial=True, context={'request': request})
         if serializer.is_valid():
             serializer.save()

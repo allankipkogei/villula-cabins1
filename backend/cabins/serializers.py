@@ -155,10 +155,15 @@ class SiteSettingsSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def get_about_image_display(self, obj):
+        # 1. Prefer the Cloudinary URL if it exists
+        if obj.about_image_url:
+            return obj.about_image_url
+            
+        # 2. Fallback to the local image field if it exists
         if obj.about_image:
             try:
                 request = self.context.get('request')
                 return request.build_absolute_uri(obj.about_image.url) if request else obj.about_image.url
             except Exception:
                 pass
-        return obj.about_image_url or ''
+        return ''

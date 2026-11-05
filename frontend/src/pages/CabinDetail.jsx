@@ -198,10 +198,10 @@ export default function CabinDetail() {
     : [getImageUrl(cabin.primary_image)];
 
   return (
-    <div style={{ backgroundColor: 'var(--color-sand-50)', paddingBottom: '6rem' }}>
+    <div style={{ backgroundColor: 'var(--color-sand-50)', paddingBottom: '6rem', overflowX: 'hidden' }}>
       {/* Breadcrumb Bar */}
       <div style={{ borderBottom: '1px solid var(--color-sand-200)', backgroundColor: '#FFFFFF', padding: '1rem 0' }}>
-        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.5rem' }}>
           <Link
             to="/cabins"
             style={{
@@ -247,7 +247,7 @@ export default function CabinDetail() {
               </span>
             )}
           </div>
-          <h1 style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.4rem)', margin: '0 0 0.5rem' }}>
+          <h1 style={{ fontSize: 'clamp(2.2rem, 4.5vw, 3.4rem)', margin: '0 0 0.5rem', wordBreak: 'break-word' }}>
             {cabin.name}
           </h1>
           {cabin.tagline && (
@@ -315,12 +315,12 @@ export default function CabinDetail() {
         {/* Main Content Grid: Details Left, Booking Widget Right */}
         <div className="split-layout-2col">
           {/* Left Column: Details & Amenities */}
-          <div>
+          <div style={{ width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
             {/* Quick Specs Pill Row */}
             <div
               style={{
                 display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(110px, 1fr))',
                 gap: '1rem',
                 padding: '1.25rem',
                 backgroundColor: '#FFFFFF',
@@ -382,7 +382,7 @@ export default function CabinDetail() {
               <div
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))',
                   gap: '1rem',
                 }}
               >
@@ -450,14 +450,17 @@ export default function CabinDetail() {
           </div>
 
           {/* Right Column: Floating Booking Card */}
-          <div className="sticky-booking-widget" style={{ position: 'sticky', top: '96px' }}>
+          <div className="sticky-booking-widget" style={{ position: 'sticky', top: '96px', width: '100%', maxWidth: '100%' }}>
             <div
               style={{
                 backgroundColor: '#FFFFFF',
                 borderRadius: 'var(--radius-xl)',
                 border: '1px solid var(--color-sand-200)',
-                padding: 'clamp(1.25rem, 4vw, 2rem)',
+                padding: 'clamp(1rem, 4vw, 2rem)',
                 boxShadow: 'var(--shadow-lg)',
+                width: '100%',
+                maxWidth: '100%',
+                boxSizing: 'border-box',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '1.5rem', borderBottom: '1px solid var(--color-sand-200)', paddingBottom: '1.25rem' }}>
@@ -487,7 +490,7 @@ export default function CabinDetail() {
               </div>
 
               {/* Day Picker */}
-              <div style={{ marginBottom: '1.5rem' }}>
+              <div style={{ marginBottom: '1.5rem', width: '100%' }}>
                 <label style={{ marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                   <Calendar size={15} style={{ color: 'var(--color-primary-600)' }} /> Select Check-In & Check-Out
                 </label>
@@ -497,10 +500,11 @@ export default function CabinDetail() {
                     justifyContent: 'center',
                     border: '1px solid var(--color-sand-200)',
                     borderRadius: 'var(--radius-md)',
-                    padding: '0.75rem',
+                    padding: '0.5rem',
                     backgroundColor: 'var(--color-sand-50)',
-                    overflowX: 'auto',
-                    maxWidth: '100%',
+                    overflowX: 'hidden',
+                    width: '100%',
+                    boxSizing: 'border-box',
                   }}
                 >
                   <DayPicker
@@ -527,6 +531,8 @@ export default function CabinDetail() {
                   color: 'var(--color-primary-800)',
                   marginBottom: '1.25rem',
                   border: '1px solid var(--color-primary-100)',
+                  flexWrap: 'wrap',
+                  gap: '0.5rem',
                 }}
               >
                 <div>

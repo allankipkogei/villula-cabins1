@@ -171,9 +171,20 @@ export default function About() {
                   }}
                 />
                 
-                {/* Responsive Logo Wrapper */}
-                <div style={{ width: '100%', maxWidth: '280px', margin: '0 auto' }}>
-                  <BrandLogo variant="mark" size="lg" theme="dark" />
+                {/* FORCE LOGO TO FIT */}
+                <div 
+                  style={{ 
+                    width: '100%', 
+                    maxWidth: '200px', 
+                    margin: '0 auto', 
+                    display: 'flex', 
+                    justifyContent: 'center',
+                    overflow: 'hidden' 
+                  }}
+                >
+                  <div style={{ transform: 'scale(0.85)', transformOrigin: 'center center' }}>
+                    <BrandLogo variant="mark" size="lg" theme="dark" />
+                  </div>
                 </div>
 
                 <h3

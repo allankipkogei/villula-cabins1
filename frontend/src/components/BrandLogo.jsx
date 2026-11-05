@@ -23,14 +23,14 @@ export default function BrandLogo({
   }[size] || { markSize: 42, titleSize: '1.45rem', subSize: '0.62rem', imgHeight: 52 };
 
   // SVG Mark component representing the official cabin line art
-  const LogoMark = ({ width = dimensions.markSize, height = dimensions.markSize }) => (
+  const LogoMark = ({ width = dimensions.markSize }) => (
     <svg
-      width={width}
-      height={height}
+      width="100%"
+      height="auto"
       viewBox="0 0 120 120"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      style={{ flexShrink: 0 }}
+      style={{ flexShrink: 0, maxWidth: `${width}px`, display: 'block' }}
     >
       {/* Outer Rounded Container */}
       <rect x="8" y="8" width="104" height="104" rx="22" stroke={markColor} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
@@ -63,7 +63,7 @@ export default function BrandLogo({
         <img
           src="/logo.jpg"
           alt="Villula Cabins Resort"
-          style={{ height: `${dimensions.imgHeight}px`, width: 'auto', display: 'block', objectFit: 'contain' }}
+          style={{ height: `${dimensions.imgHeight}px`, width: 'auto', display: 'block', objectFit: 'contain', maxWidth: '100%' }}
         />
       );
     }

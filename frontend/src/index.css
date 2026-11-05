@@ -462,3 +462,16 @@ p, h1, h2, h3, h4, h5, h6, span, div {
     justify-content: center !important;
   }
 }
+
+/* Force the story logo card to fit on mobile screens */
+.responsive-logo-card svg {
+  max-width: 100% !important;
+  height: auto !important;
+  width: 100% !important;
+}
+
+.responsive-logo-card {
+  width: 100%;
+  max-width: 100vw;
+  box-sizing: border-box;
+}

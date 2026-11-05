@@ -128,14 +128,24 @@ export default function About() {
                   borderRadius: 'var(--radius-xl)',
                   overflow: 'hidden',
                   boxShadow: 'var(--shadow-xl)',
-                  height: '460px',
                   width: '100%',
+                  aspectRatio: '1 / 1', // Forces a square shape that adapts to screen width
+                  maxHeight: '500px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  backgroundColor: '#FFFFFF',
                 }}
               >
                 <img
                   src={settings.about_image_display}
                   alt="Villula Resort Grounds"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                  style={{ 
+                    width: '100%', 
+                    height: '100%', 
+                    objectFit: 'contain', // Ensures the logo is fully visible and not cropped
+                    padding: '2rem' 
+                  }}
                 />
               </div>
             ) : (

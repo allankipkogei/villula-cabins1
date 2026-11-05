@@ -427,25 +427,6 @@ export default function Home() {
                 boxShadow: 'var(--shadow-md)',
               }}
             >
-              <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.5rem',
-                  backgroundColor: 'var(--color-primary-100)',
-                  color: 'var(--color-primary-900)',
-                  fontSize: '0.8rem',
-                  fontWeight: 700,
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.08em',
-                  padding: '0.45rem 1.15rem',
-                  borderRadius: '999px',
-                  marginBottom: '1.5rem',
-                }}
-              >
-                Grand Opening Soon
-              </div>
-
               <h3 style={{ fontSize: '2.1rem', color: 'var(--color-primary-950)', marginBottom: '1rem', fontWeight: 600 }}>
                 Our Luxury Architectural Sanctuaries
               </h3>
@@ -461,7 +442,6 @@ export default function Home() {
               >
                 Villula Cabins Resort is set across the serene landscape in Eldoret, Uasin Gishu County, Kenya.
                 Featuring bespoke shipping container villas, futuristic 270° stargazing capsules, and private cedar hot tubs.
-                Stay tuned for official reservation bookings.
               </p>
 
               {/* Architectural Highlights */}
@@ -755,31 +735,14 @@ export default function Home() {
               }}
             >
               <BrandLogo variant="full" size="md" />
-              <div
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
-                  backgroundColor: 'var(--color-primary-100)',
-                  color: 'var(--color-primary-900)',
-                  fontSize: '0.8rem',
-                  fontWeight: 700,
-                  padding: '0.4rem 0.95rem',
-                  borderRadius: '999px',
-                  marginTop: '1.75rem',
-                  marginBottom: '1.25rem',
-                }}
-              >
-                Opening Soon
-              </div>
-              <h3 style={{ fontSize: '1.4rem', color: 'var(--color-primary-950)', marginBottom: '0.5rem', fontWeight: 700 }}>
+              <h3 style={{ fontSize: '1.4rem', color: 'var(--color-primary-950)', margin: '1.75rem 0 0.5rem', fontWeight: 700 }}>
                 VIllula View Villas
               </h3>
               <div style={{ color: 'var(--color-primary-700)', fontSize: '0.85rem', fontWeight: 600, marginBottom: '1.25rem', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
                 Eldoret, Uasin Gishu County • Kenya
               </div>
               <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', lineHeight: 1.6, margin: '0 auto 1.75rem', maxWidth: '340px' }}>
-                Modern container villas and 270° stargazing capsules coming soon to the scenic Great Rift Valley landscape.
+                Modern container villas and 270° stargazing capsules set in the scenic Great Rift Valley landscape.
               </p>
               <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', justifyContent: 'center' }}>
                 <Link to="/contact" className="btn btn-primary btn-sm">

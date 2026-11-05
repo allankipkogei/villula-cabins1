@@ -4,8 +4,11 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from django.db.models import Count, Sum, Q
 from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
 from datetime import date
 import requests
+import json
+import hashlib
 
 from .models import Booking
 from cabins.models import Cabin
@@ -80,6 +83,37 @@ class CreateCheckoutSessionView(APIView):
             return Response({'error': 'Booking not found'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@csrf_exempt
+def paystack_webhook(request):
+    if request.method == 'POST':
+        # Verify the request is from Paystack
+        paystack_signature = request.headers.get('x-paystack-signature')
+        secret = settings.PAYSTACK_SECRET_KEY.encode('utf-8')
+        
+        hash = hashlib.sha512(request.body + secret).hexdigest()
+        
+        if hash != paystack_signature:
+            return Response({'error': 'Invalid signature'}, status=status.HTTP_401_UNAUTHORIZED)
+            
+        payload = json.loads(request.body)
+        
+        # Check if the event is a successful charge
+        if payload['event'] == 'charge.success':
+            reference = payload['data']['reference'] # e.g., "VIL-45"
+            try:
+                booking_id = reference.split('-')[1]
+                booking = Booking.objects.get(id=booking_id)
+                booking.status = 'confirmed'
+                booking.save()
+                print(f"✅ Payment confirmed for Booking #{booking_id}")
+            except (IndexError, Booking.DoesNotExist):
+                print(f"❌ Booking not found for reference {reference}")
+                
+        return Response({'status': 'success'}, status=status.HTTP_200_OK)
+    
+    return Response({'error': 'Invalid request'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 # ---------- ADMIN ----------

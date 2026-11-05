@@ -7,6 +7,7 @@ from .views import (
     AdminDashboardStatsView,
     CreateCheckoutSessionView,
     MeView,
+    paystack_webhook,
 )
 
 urlpatterns = [
@@ -15,6 +16,9 @@ urlpatterns = [
     path('cabins/<int:cabin_id>/availability/', CabinAvailabilityView.as_view(), name='cabin-availability'),
     path('create-checkout-session/', CreateCheckoutSessionView.as_view(), name='create-checkout-session'),
     path('me/', MeView.as_view(), name='me'),
+    
+    # Paystack Webhook
+    path('paystack-webhook/', paystack_webhook, name='paystack-webhook'),
     
     # Admin Endpoints
     path('admin/bookings/', AdminBookingListView.as_view(), name='admin-booking-list'),

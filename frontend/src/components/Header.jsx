@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
-import { Menu, X, Compass, Phone } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 
 export default function Header() {
@@ -40,7 +40,7 @@ export default function Header() {
         }}
       >
         <div
-          className="container"
+          className="container header-container"
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -49,7 +49,9 @@ export default function Header() {
           }}
         >
           {/* Official Logo */}
-          <BrandLogo to="/" size="md" />
+          <div className="header-logo-wrap">
+            <BrandLogo to="/" size="md" />
+          </div>
 
           {/* Desktop Nav */}
           <nav
@@ -78,17 +80,10 @@ export default function Header() {
           </nav>
 
           {/* Actions */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1rem',
-            }}
-          >
+          <div className="header-actions">
             <Link
               to="/cabins"
-              className="btn btn-primary"
-              style={{ padding: '0.65rem 1.4rem' }}
+              className="btn btn-primary header-book-btn"
             >
               Book Now
             </Link>
@@ -169,16 +164,58 @@ export default function Header() {
       )}
 
       <style>{`
+        /* Default Styles (Desktop) */
+        .header-actions {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+        }
+        
+        .header-book-btn {
+          padding: 0.65rem 1.4rem;
+          font-size: 0.95rem;
+          white-space: nowrap;
+        }
+
         @media (min-width: 820px) {
           .desktop-nav {
             display: flex !important;
           }
         }
+
+        /* Mobile & Tablet Styles */
         @media (max-width: 819px) {
           .mobile-toggle {
             display: block !important;
           }
+          
+          .header-container {
+            height: 64px !important; /* Slightly shorter header on mobile */
+            padding-left: 1rem !important;
+            padding-right: 1rem !important;
+          }
+
+          .header-actions {
+            gap: 0.5rem; /* Bring the book button and menu closer */
+          }
+
+          .header-book-btn {
+            padding: 0.45rem 0.85rem !important; /* Smaller padding */
+            font-size: 0.8rem !important; /* Smaller text */
+          }
+          
+          /* Shrink the logo slightly to make room */
+          .header-logo-wrap svg {
+             transform: scale(0.85);
+             transform-origin: left center;
+          }
+          
+          /* Adjust drawer top position to match shorter header */
+          .mobile-drawer {
+            top: 64px !important;
+          }
         }
+
         .nav-item {
           font-weight: 500;
           font-size: 0.95rem;

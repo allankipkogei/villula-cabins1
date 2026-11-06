@@ -61,10 +61,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 if config('DATABASE_URL', default=None):
+    db_url = config('DATABASE_URL')
+    is_ssl = 'neon.tech' in db_url or 'sslmode=require' in db_url
     DATABASES = {
         'default': dj_database_url.config(
-            default=config('DATABASE_URL'),
-            conn_max_age=600
+            default=db_url,
+            conn_max_age=600,
+            ssl_require=is_ssl
         )
     }
 elif config('DB_NAME', default=None):

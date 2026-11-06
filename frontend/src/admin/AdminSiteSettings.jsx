@@ -46,12 +46,14 @@ export default function AdminSiteSettings() {
     try {
       const data = new FormData();
       Object.entries(settings).forEach(([key, val]) => {
+        // Skip image fields from state so we don't send string URLs as file fields
+        if (key === 'about_image' || key === 'about_image_display') return;
         if (val !== null && val !== undefined) {
           data.append(key, val);
         }
       });
 
-      if (aboutImageFile) {
+      if (aboutImageFile instanceof File) {
         data.append('about_image', aboutImageFile);
       }
 

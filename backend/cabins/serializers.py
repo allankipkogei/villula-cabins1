@@ -154,6 +154,14 @@ class SiteSettingsSerializer(serializers.ModelSerializer):
         model = SiteSettings
         fields = '__all__'
 
+    def to_internal_value(self, data):
+        # If about_image is a string (e.g. unchanged URL or string), ignore it so DRF does not require a file upload
+        if hasattr(data, 'copy'):
+            data = data.copy()
+        if 'about_image' in data and isinstance(data['about_image'], str):
+            del data['about_image']
+        return super().to_internal_value(data)
+
     def get_about_image_display(self, obj):
         # 1. Prefer the Cloudinary URL if it exists
         if obj.about_image_url:

@@ -4,6 +4,7 @@ from .views import (
     CabinAvailabilityView,
     AdminBookingListView, 
     AdminBookingDetailView, 
+    AdminBookingResendWelcomeEmailView,
     AdminDashboardStatsView,
     CreateCheckoutSessionView,
     MeView,
@@ -23,5 +24,6 @@ urlpatterns = [
     # Admin Endpoints
     path('admin/bookings/', AdminBookingListView.as_view(), name='admin-booking-list'),
     path('admin/bookings/<int:pk>/', AdminBookingDetailView.as_view(), name='admin-booking-detail'),
+    path('admin/bookings/<int:pk>/resend-welcome-email/', AdminBookingResendWelcomeEmailView.as_view(), name='admin-booking-resend-welcome-email'),
     path('admin/stats/', AdminDashboardStatsView.as_view(), name='admin-stats'),
 ]

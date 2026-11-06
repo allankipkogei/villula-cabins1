@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Phone, Mail, MapPin, Clock, Send, CheckCircle2, AlertCircle, MessageSquare, ExternalLink } from 'lucide-react';
 import api from '../api';
+import { trackContactSubmit } from '../utils/analytics';
 
 export default function Contact() {
   const [settings, setSettings] = useState(null);
@@ -29,6 +30,7 @@ export default function Contact() {
 
     try {
       await api.post('contact/', form);
+      trackContactSubmit(form.subject || 'General Inquiry');
       setStatus('sent');
       setForm({ name: '', email: '', phone: '', subject: '', message: '' });
     } catch (err) {

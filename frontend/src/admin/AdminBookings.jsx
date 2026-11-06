@@ -25,6 +25,7 @@ export default function AdminBookings() {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
   const [activeBookingModal, setActiveBookingModal] = useState(null);
+  const [emailSending, setEmailSending] = useState(false);
 
   // Manual Reservation Creation
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -101,12 +102,28 @@ export default function AdminBookings() {
   const updateStatus = async (id, status) => {
     try {
       await api.patch(`admin/bookings/${id}/`, { status });
+      const target = bookings.find(b => b.id === id);
       setBookings(prev => prev.map(b => b.id === id ? { ...b, status } : b));
       if (activeBookingModal?.id === id) {
         setActiveBookingModal(prev => ({ ...prev, status }));
       }
+      if (status === 'confirmed') {
+        alert(`Booking #${id} confirmed! An automated welcome confirmation email has been dispatched to ${target?.guest_email || 'the guest'}.`);
+      }
     } catch {
       alert('Failed to update booking status.');
+    }
+  };
+
+  const resendWelcomeEmail = async (id) => {
+    setEmailSending(true);
+    try {
+      const res = await api.post(`admin/bookings/${id}/resend-welcome-email/`);
+      alert(res.data?.message || 'Welcome confirmation email sent successfully!');
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to deliver welcome email. Please verify SMTP credentials.');
+    } finally {
+      setEmailSending(false);
     }
   };
 
@@ -668,10 +685,18 @@ export default function AdminBookings() {
               </div>
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+              <button
+                onClick={() => resendWelcomeEmail(activeBookingModal.id)}
+                disabled={emailSending}
+                className="btn btn-outline btn-sm"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', color: 'var(--color-primary-700)', borderColor: 'var(--color-primary-700)' }}
+              >
+                <Mail size={15} /> {emailSending ? 'Sending Welcome Email...' : 'Send / Resend Welcome Email'}
+              </button>
               <button
                 onClick={() => setActiveBookingModal(null)}
-                className="btn btn-outline btn-sm"
+                className="btn btn-primary btn-sm"
               >
                 Close
               </button>

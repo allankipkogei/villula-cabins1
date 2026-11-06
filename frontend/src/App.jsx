@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import PublicLayout from './components/PublicLayout';
+import AnalyticsTracker from './components/AnalyticsTracker';
 import Home from './pages/Home';
 import About from './pages/About';
 import Cabins from './pages/Cabins';
@@ -21,6 +22,7 @@ export default function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
+        <AnalyticsTracker />
         <Routes>
           {/* Public resort customer site */}
           <Route element={<PublicLayout />}>

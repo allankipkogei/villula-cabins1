@@ -19,6 +19,7 @@ import api from '../api';
 import { formatKSh } from '../utils/formatCurrency';
 import { getImageUrl } from '../utils/imageUrl';
 import { useAuth } from '../context/AuthContext';
+import { trackViewItem, trackBeginCheckout, trackPurchase } from '../utils/analytics';
 
 export default function CabinDetail() {
   const { slug } = useParams();
@@ -65,6 +66,7 @@ export default function CabinDetail() {
     api.get(`cabins/${slug}/`)
       .then(res => {
         setCabin(res.data);
+        trackViewItem(res.data);
         const prim = getImageUrl(
           res.data.images?.find(i => i.is_primary)?.url ||
           res.data.images?.[0]?.url ||
@@ -135,8 +137,12 @@ export default function CabinDetail() {
         check_out: formatDate(range.to),
       };
 
+      // Track begin checkout in GA4
+      trackBeginCheckout(cabin, nights, Number(form.guests), grandTotal);
+
       // 1. Create the booking
       const res = await api.post('bookings/', payload);
+      trackPurchase(res.data, cabin);
       
       // Now the ID is guaranteed to be at res.data.id because of the backend fix
       const bookingId = res.data.id;

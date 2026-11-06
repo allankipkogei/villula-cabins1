@@ -4,6 +4,7 @@ import { Users, Bed, Bath, Maximize, Star, ArrowRight, Filter, Check } from 'luc
 import api from '../api';
 import { formatKSh } from '../utils/formatCurrency';
 import { getImageUrl } from '../utils/imageUrl';
+import { trackViewItemList } from '../utils/analytics';
 
 export default function Cabins() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -24,7 +25,10 @@ export default function Cabins() {
     if (guestsFilter) params.guests = guestsFilter;
 
     api.get('cabins/', { params })
-      .then(res => setCabins(res.data))
+      .then(res => {
+        setCabins(res.data);
+        trackViewItemList(res.data);
+      })
       .catch(err => console.error(err))
       .finally(() => setLoading(false));
   }, [typeFilter, guestsFilter]);

@@ -15,6 +15,7 @@ from cabins.models import Cabin
 from contacts.models import ContactMessage
 from .serializers import BookingCreateSerializer, BookingAdminSerializer
 from .permissions import IsStaffUser
+from .emails import send_booking_welcome_email
 
 
 class BookingCreateView(generics.CreateAPIView):
@@ -104,10 +105,13 @@ def paystack_webhook(request):
             reference = payload['data']['reference'] # e.g., "VIL-45"
             try:
                 booking_id = reference.split('-')[1]
-                booking = Booking.objects.get(id=booking_id)
+                booking = Booking.objects.select_related('cabin').get(id=booking_id)
+                old_status = booking.status
                 booking.status = 'confirmed'
                 booking.save()
-                print(f"✅ Payment confirmed for Booking #{booking_id}")
+                if old_status != 'confirmed':
+                    send_booking_welcome_email(booking)
+                print(f"✅ Payment confirmed & welcome email sent for Booking #{booking_id}")
             except (IndexError, Booking.DoesNotExist):
                 print(f"❌ Booking not found for reference {reference}")
                 
@@ -122,6 +126,11 @@ class AdminBookingListView(generics.ListCreateAPIView):
     """List all bookings, filterable by status and cabin, or create a new reservation."""
     serializer_class = BookingAdminSerializer
     permission_classes = [IsStaffUser]
+
+    def perform_create(self, serializer):
+        booking = serializer.save()
+        if booking.status == 'confirmed':
+            send_booking_welcome_email(booking)
 
     def get_queryset(self):
         qs = Booking.objects.select_related('cabin').all()
@@ -149,6 +158,35 @@ class AdminBookingDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BookingAdminSerializer
     permission_classes = [IsStaffUser]
     http_method_names = ['get', 'patch', 'delete', 'head', 'options']
+
+    def perform_update(self, serializer):
+        instance = self.get_object()
+        old_status = instance.status
+        booking = serializer.save()
+        if old_status != 'confirmed' and booking.status == 'confirmed':
+            send_booking_welcome_email(booking)
+
+
+class AdminBookingResendWelcomeEmailView(APIView):
+    """Allows admin to manually trigger or resend the welcome confirmation email."""
+    permission_classes = [IsStaffUser]
+
+    def post(self, request, pk):
+        try:
+            booking = Booking.objects.select_related('cabin').get(pk=pk)
+            sent = send_booking_welcome_email(booking)
+            if sent:
+                return Response({
+                    'status': 'success',
+                    'message': f'Welcome confirmation email successfully sent to {booking.guest_email}.'
+                })
+            else:
+                return Response({
+                    'status': 'error',
+                    'message': 'Failed to deliver email. Please check server email settings.'
+                }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Booking.DoesNotExist:
+            return Response({'error': 'Booking not found.'}, status=status.HTTP_404_NOT_FOUND)
 
 
 class AdminDashboardStatsView(APIView):

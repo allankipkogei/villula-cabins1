@@ -502,3 +502,187 @@ p, h1, h2, h3, h4, h5, h6, span, div {
     max-width: 100% !important;
   }
 }
+
+/* ==========================================================================
+   Full-Site Responsive Enhancements
+   ========================================================================== */
+
+/* Contact form 2-col fields → 1-col on mobile */
+.contact-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 600px) {
+  .contact-form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Hero section padding / font adjustments */
+@media (max-width: 768px) {
+  .hero-section {
+    padding: 5rem 0 3.5rem;
+    min-height: 70vh;
+  }
+  .hero-title {
+    font-size: clamp(2rem, 7vw, 3rem);
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+  }
+  .hero-cta-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .hero-cta-row .btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-section {
+    padding: 4rem 0 3rem;
+    min-height: 60vh;
+  }
+}
+
+/* Feature cards section padding */
+@media (max-width: 768px) {
+  .features-section {
+    padding: 4rem 0;
+  }
+}
+
+/* Nature experience section gap */
+@media (max-width: 768px) {
+  .nature-section {
+    padding: 4rem 0;
+  }
+  .nature-grid {
+    gap: 2.5rem;
+  }
+}
+
+/* Footer responsive */
+@media (max-width: 640px) {
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 2rem;
+  }
+  .footer-brand {
+    text-align: center;
+  }
+  .footer-brand .footer-logo {
+    justify-content: center;
+  }
+  .footer-social-links {
+    justify-content: center;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+  }
+}
+
+/* Header nav on mobile */
+@media (max-width: 820px) {
+  .nav-links {
+    display: none;
+  }
+  .nav-mobile-menu {
+    display: flex;
+  }
+}
+
+/* Admin tables */
+@media (max-width: 768px) {
+  .admin-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: var(--radius-md);
+  }
+  .admin-table-wrap table {
+    min-width: 600px;
+  }
+}
+
+/* Cabin card image heights on mobile */
+@media (max-width: 480px) {
+  .cabin-card-img {
+    height: 200px !important;
+  }
+}
+
+/* About page stats grid */
+@media (max-width: 600px) {
+  .about-stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+@media (max-width: 360px) {
+  .about-stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Quick search form hero overlay */
+@media (max-width: 768px) {
+  .hero-search-box {
+    padding: 1.25rem !important;
+    margin: 0 1rem;
+    border-radius: var(--radius-md) !important;
+  }
+}
+
+/* Section padding scale-down on mobile */
+@media (max-width: 768px) {
+  section {
+    padding-top: 3.5rem !important;
+    padding-bottom: 3.5rem !important;
+  }
+}
+@media (max-width: 480px) {
+  section {
+    padding-top: 2.5rem !important;
+    padding-bottom: 2.5rem !important;
+  }
+}
+
+/* House Rules grid */
+@media (max-width: 600px) {
+  .rules-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Cabin detail thumbnail strip */
+@media (max-width: 480px) {
+  .cabin-thumbs-strip {
+    gap: 0.4rem;
+  }
+  .cabin-thumb {
+    height: 60px !important;
+    border-radius: var(--radius-sm) !important;
+  }
+}
+
+/* Make images never overflow */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Prevent fixed/absolute overlays from causing horizontal scroll */
+@media (max-width: 768px) {
+  .modal-overlay {
+    padding: 1rem;
+  }
+  .modal-box {
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: var(--radius-md) !important;
+  }
+}

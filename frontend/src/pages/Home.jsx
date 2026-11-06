@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
   Compass,
-  Flame,
   Wifi,
   Moon,
   Users,
@@ -13,7 +12,8 @@ import {
   Star,
   CheckCircle2,
   Calendar,
-  Coffee,
+  Shield,
+  ParkingCircle,
   Trees
 } from 'lucide-react';
 import api from '../api';
@@ -290,9 +290,9 @@ export default function Home() {
                 desc: 'Over-bed curved smart-glass designed for dark-sky celestial views right from your king mattress.',
               },
               {
-                icon: <Flame size={28} />,
-                title: 'Private Cedar Hot Tubs',
-                desc: 'Every single sanctuary includes its own private cedar hot tub overlooking open scenic nature vistas.',
+                icon: <Shield size={28} />,
+                title: '24/7 Security',
+                desc: 'Round-the-clock security ensures your peace of mind throughout your stay at Villula Cabins Resort.',
               },
               {
                 icon: <Wifi size={28} />,
@@ -300,9 +300,9 @@ export default function Home() {
                 desc: 'High-speed satellite connectivity so you can work remotely, stream under open skies, or completely unplug.',
               },
               {
-                icon: <Coffee size={28} />,
-                title: 'Artisan Kitchen & Coffee',
-                desc: 'Nespresso Vertuo espresso bars, local artisan roasts, induction cooking, and luxury cookware.',
+                icon: <ParkingCircle size={28} />,
+                title: 'Ample Parking',
+                desc: 'Secure and spacious parking available on-site for all guests at no extra charge.',
               },
             ].map((f, i) => (
               <div

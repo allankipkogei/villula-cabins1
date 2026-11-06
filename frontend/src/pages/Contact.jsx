@@ -260,7 +260,7 @@ export default function Contact() {
             </div>
 
             <form onSubmit={handleSubmit} style={{ display: 'grid', gap: '1rem' }}>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div className="contact-form-row">
                 <div>
                   <label>Your Name</label>
                   <input
@@ -284,7 +284,7 @@ export default function Contact() {
                 </div>
               </div>
 
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <div className="contact-form-row">
                 <div>
                   <label>Phone Number (Optional)</label>
                   <input

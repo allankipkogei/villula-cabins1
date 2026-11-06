@@ -174,7 +174,7 @@ class AdminBookingResendWelcomeEmailView(APIView):
     def post(self, request, pk):
         try:
             booking = Booking.objects.select_related('cabin').get(pk=pk)
-            sent = send_booking_welcome_email(booking)
+            sent, err_msg = send_booking_welcome_email(booking)
             if sent:
                 return Response({
                     'status': 'success',
@@ -183,7 +183,7 @@ class AdminBookingResendWelcomeEmailView(APIView):
             else:
                 return Response({
                     'status': 'error',
-                    'message': 'Failed to deliver email. Please check server email settings.'
+                    'message': f'Failed to deliver email: {err_msg}'
                 }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         except Booking.DoesNotExist:
             return Response({'error': 'Booking not found.'}, status=status.HTTP_404_NOT_FOUND)

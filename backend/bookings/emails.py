@@ -14,7 +14,7 @@ def send_booking_welcome_email(booking):
     """
     if not booking or not booking.guest_email:
         logger.warning(f"Cannot send confirmation email: Missing guest email for booking #{getattr(booking, 'id', None)}")
-        return False
+        return False, "Missing guest email on booking." 
 
     try:
         # Load site settings for dynamic resort information
@@ -25,7 +25,7 @@ def send_booking_welcome_email(booking):
         contact_phone = getattr(site_settings, 'contact_phone', '+254 700 000000') or '+254 700 000000'
         contact_email = getattr(site_settings, 'contact_email', 'concierge@villulacabinsresort.co.ke') or 'concierge@villulacabinsresort.co.ke'
         contact_address = getattr(site_settings, 'contact_address', 'VIllula View Villas, Off C646, Eldoret, Uasin Gishu County, Kenya') or 'VIllula View Villas, Off C646, Eldoret, Kenya'
-        from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', f'{resort_name} <noreply@villulacabinsresort.co.ke>')
+        from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', None) or 'Villula Cabins Resort <kipkogei45@gmail.com>'
 
         # Calculate stay metrics
         nights = (booking.check_out - booking.check_in).days if (booking.check_out and booking.check_in) else 1
@@ -242,9 +242,9 @@ https://villulacabinsresort.co.ke
         msg.send(fail_silently=False)
         logger.info(f"Booking welcome email sent to {booking.guest_email} for booking #{booking.id}")
         print(f"[WELCOME EMAIL SENT] Booking #{booking.id} -> {booking.guest_email} (Ref VIL-{booking.id})")
-        return True
+        return True, None
 
     except Exception as e:
         logger.error(f"Failed to send booking welcome email to {getattr(booking, 'guest_email', 'unknown')}: {e}")
         print(f"[WELCOME EMAIL ERROR] Booking #{getattr(booking, 'id', 'unknown')} -> {e}")
-        return False
+        return False, str(e)

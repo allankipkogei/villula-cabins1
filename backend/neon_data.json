@@ -1,0 +1,107 @@
+[
+{
+  "model": "cabins.sitesettings",
+  "pk": 1,
+  "fields": {
+    "resort_name": "Villula Cabins Resort",
+    "tagline": "Modern Architectural Micro-Stays & Luxury Nature Sanctuaries",
+    "about_heading": "Relax. Reconnect. Experience Nature Views in Comfort.",
+    "about_text": "Villula Cabins Resort reimagines the modern retreat experience across peaceful scenic grounds. We merged sustainable micro-architecture — precision-engineered shipping containers and aerospace-grade glass capsules — with five-star bespoke hospitality. Every stay features private wood-fired cedar hot tubs, Starlink gigabit connectivity, panoramic stargazing skylights, and total secluded stillness.",
+    "about_image": "",
+    "about_image_url": "",
+    "contact_phone": "+254 (0) 700 555 845",
+    "contact_email": "stay@villularesort.com",
+    "contact_address": "VIllula View Villas, Off C646, Eldoret, Uasin Gishu County, Kenya",
+    "check_in_time": "1:00 PM",
+    "check_out_time": "11:00 AM",
+    "map_embed_url": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.654877395028!2d35.3199392!3d0.5151905!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1781030023508837%3A0x75e2b224eac58bcd!2sVIllula%20View%20Villas!5e0!3m2!1sen!2ske!4v1714000000000!5m2!1sen!2ske",
+    "instagram_url": "https://www.instagram.com/villulacabinseldoret/"
+  }
+},
+{
+  "model": "accounts.userprofile",
+  "pk": 4,
+  "fields": {
+    "user": [
+      "kipkogei45@gmail.com"
+    ],
+    "phone": "",
+    "email_verified": false,
+    "created_at": "2026-10-28T07:05:49.230Z",
+    "updated_at": "2026-10-28T07:05:49.232Z"
+  }
+},
+{
+  "model": "accounts.userprofile",
+  "pk": 6,
+  "fields": {
+    "user": [
+      "korirallankipkogei@gmail.com"
+    ],
+    "phone": "",
+    "email_verified": true,
+    "created_at": "2026-10-29T08:37:14.475Z",
+    "updated_at": "2026-10-29T08:41:16.451Z"
+  }
+},
+{
+  "model": "accounts.emailverificationcode",
+  "pk": 4,
+  "fields": {
+    "user": [
+      "kipkogei45@gmail.com"
+    ],
+    "email": "kipkogei45@gmail.com",
+    "code": "322973",
+    "purpose": "signup",
+    "created_at": "2026-10-28T07:05:49.241Z",
+    "expires_at": "2026-10-28T07:20:49.241Z",
+    "is_used": true
+  }
+},
+{
+  "model": "accounts.emailverificationcode",
+  "pk": 6,
+  "fields": {
+    "user": [
+      "kipkogei45@gmail.com"
+    ],
+    "email": "kipkogei45@gmail.com",
+    "code": "296320",
+    "purpose": "signup",
+    "created_at": "2026-10-29T08:25:11.568Z",
+    "expires_at": "2026-10-29T08:40:11.568Z",
+    "is_used": false
+  }
+},
+{
+  "model": "accounts.emailverificationcode",
+  "pk": 7,
+  "fields": {
+    "user": [
+      "korirallankipkogei@gmail.com"
+    ],
+    "email": "korirallankipkogei@gmail.com",
+    "code": "888638",
+    "purpose": "signup",
+    "created_at": "2026-10-29T08:37:14.489Z",
+    "expires_at": "2026-10-29T08:52:14.489Z",
+    "is_used": true
+  }
+},
+{
+  "model": "accounts.emailverificationcode",
+  "pk": 8,
+  "fields": {
+    "user": [
+      "korirallankipkogei@gmail.com"
+    ],
+    "email": "korirallankipkogei@gmail.com",
+    "code": "431238",
+    "purpose": "signup",
+    "created_at": "2026-10-29T08:40:43.040Z",
+    "expires_at": "2026-10-29T08:55:43.040Z",
+    "is_used": true
+  }
+}
+]

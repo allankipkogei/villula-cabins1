@@ -773,7 +773,7 @@ export default function Home() {
             Escape The Noise. Reserve Your Stay.
           </h2>
           <p style={{ color: '#A6B5AC', fontSize: '1.15rem', lineHeight: 1.7, marginBottom: '2.5rem' }}>
-            Book directly through our official resort website for guaranteed best rates, complimentary firewood for the cedar tub, and flexible dates.
+            Book directly through our official resort website for guaranteed best rates, and flexible dates.
           </p>
           <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link to="/cabins" className="btn btn-accent btn-lg">

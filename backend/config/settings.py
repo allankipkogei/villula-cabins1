@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG', default=False, cast=bool)
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver', '.onrender.com']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'testserver', '.onrender.com', 'villulacabinsresort.co.ke', 'www.villulacabinsresort.co.ke']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -19,6 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cloudinary_storage',
     'cloudinary',
+    'anymail',  # <-- ADDED FOR SENDGRID
     # Third-party
     'rest_framework',
     'corsheaders',
@@ -30,7 +31,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',          # must be near top
+    'corsheaders.middleware.CorsMiddleware',          
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -110,7 +111,6 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CORS — allow React dev server and Production
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
@@ -119,7 +119,6 @@ CORS_ALLOWED_ORIGINS = [
     'https://www.villulacabinsresort.co.ke',
 ]
 
-# DRF + JWT
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -129,19 +128,19 @@ REST_FRAMEWORK = {
     ),
 }
 
-# Email Configuration
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+# ==========================================
+# SENDGRID CONFIGURATION (HTTP API)
+# ==========================================
+# Remove all the old EMAIL_HOST, EMAIL_PORT, EMAIL_USE_TLS, etc.
+ANYMAIL = {
+    "SENDGRID_API_KEY": config('SENDGRID_API_KEY', default=''),
+}
 
-if EMAIL_HOST_USER and EMAIL_HOST_PASSWORD:
-    EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.smtp.EmailBackend')
-else:
-    EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+# Force Django to use SendGrid's HTTP API instead of blocked SMTP
+EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
 
-EMAIL_HOST = config('EMAIL_HOST', default='smtp-relay.brevo.com')
-EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='Villula Cabins Resort <kipkogei45@gmail.com>')
+# Must be the email you verified in SendGrid
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='concierge@villulacabins.co.ke')
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),

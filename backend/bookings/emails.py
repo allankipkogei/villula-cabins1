@@ -26,8 +26,7 @@ def send_booking_welcome_email(booking):
         contact_email = getattr(site_settings, 'contact_email', 'concierge@villulacabinsresort.co.ke') or 'concierge@villulacabinsresort.co.ke'
         contact_address = getattr(site_settings, 'contact_address', 'VIllula View Villas, Off C646, Eldoret, Uasin Gishu County, Kenya') or 'VIllula View Villas, Off C646, Eldoret, Kenya'
         
-        # THE FIX: Fallback to verified domain email instead of Gmail
-        from_email = getattr(settings, 'DEFAULT_FROM_EMAIL', None) or 'Villula Cabins Resort <concierge@villulacabins.co.ke>'
+        # Note: from_email is now hardcoded in the EmailMultiAlternatives block below.
 
         # Calculate stay metrics
         nights = (booking.check_out - booking.check_in).days if (booking.check_out and booking.check_in) else 1
@@ -234,10 +233,11 @@ https://villulacabinsresort.co.ke
 </body>
 </html>"""
 
+        # HARDCODED SENDER TO MATCH VERIFIED SENDGRID DOMAIN
         msg = EmailMultiAlternatives(
             subject=subject,
             body=text_content,
-            from_email=from_email,
+            from_email='Villula Cabins Resort <concierge@villulacabins.co.ke>',
             to=[booking.guest_email],
         )
         msg.attach_alternative(html_content, "text/html")

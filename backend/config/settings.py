@@ -19,7 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'cloudinary_storage',
     'cloudinary',
-    'anymail',  # <-- ADDED FOR SENDGRID
+    'anymail',  # Required for Resend
     # Third-party
     'rest_framework',
     'corsheaders',
@@ -129,17 +129,17 @@ REST_FRAMEWORK = {
 }
 
 # ==========================================
-# SENDGRID CONFIGURATION (HTTP API)
+# RESEND CONFIGURATION (HTTP API)
 # ==========================================
-# Remove all the old EMAIL_HOST, EMAIL_PORT, EMAIL_USE_TLS, etc.
+# Replaces the old SendGrid setup. Render blocks SMTP, so we use HTTP API.
 ANYMAIL = {
-    "SENDGRID_API_KEY": config('SENDGRID_API_KEY', default=''),
+    "RESEND_API_KEY": config('RESEND_API_KEY', default=''),
 }
 
-# Force Django to use SendGrid's HTTP API instead of blocked SMTP
-EMAIL_BACKEND = "anymail.backends.sendgrid.EmailBackend"
+# Force Django to use Resend's HTTP API
+EMAIL_BACKEND = "anymail.backends.resend.EmailBackend"
 
-# Must be the email you verified in SendGrid
+# Must match the domain or email verified in Resend
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='concierge@villulacabins.co.ke')
 
 SIMPLE_JWT = {
